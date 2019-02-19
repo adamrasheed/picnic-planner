@@ -1,19 +1,27 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { fontSize, P } from "../../styles/typography";
-import Person from "../Global/Person";
+import Person, { StyledPerson } from "../Global/Person";
 import ItemMeta from "./ItemMeta";
 
 const ItemContainer = styled.div`
   display: grid;
   grid-template-columns: 3fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: auto auto;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   justify-items: stretch;
   align-items: stretch;
   padding: calc(1rem - 1px) 4px 1rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+
+  ${StyledPerson} {
+    margin: 12px 0 0;
+    p {
+      font-size: 12px;
+      letter-spacing: 0.05em;
+    }
+  }
 `;
 
 const ItemTitle = styled(P)`
@@ -24,18 +32,19 @@ const ItemTitle = styled(P)`
   grid-row: 1/2;
 `;
 
+const ItemPerson = styled(Person)`
+  background: red;
+`;
+
 class BasketItem extends Component {
   state = {};
   render() {
-    const { name } = this.props;
+    const { name, item, type } = this.props;
     return (
       <ItemContainer>
-        <ItemTitle>Potato Salad</ItemTitle>
-        <ItemMeta style={{ gridColumn: `2/3`, gridRow: `1/2` }} />
-        <Person
-          name={name}
-          style={{ gridColumn: `1/2`, gridRow: `2/3`, paddingTop: `0.75rem` }}
-        />
+        <ItemTitle>{item}</ItemTitle>
+        <ItemMeta style={{ gridColumn: `2/3`, gridRow: `1/2` }} type={type} />
+        <ItemPerson small name={name} />
       </ItemContainer>
     );
   }

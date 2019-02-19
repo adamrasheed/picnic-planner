@@ -13,8 +13,11 @@ const Button = styled.button`
   text-align: center;
   text-transform: uppercase;
   box-shadow: ${shadow.small};
+  cursor: pointer;
   padding: 0.75rem 3.5rem;
   width: ${props => (props.full ? `100%` : `auto`)};
+  border-radius: ${props => (props.rounded ? `4px` : `unset`)};
+  ${props => (props.center ? `margin-right: auto; margin-left: auto;` : null)}
 `;
 
 export default Button;

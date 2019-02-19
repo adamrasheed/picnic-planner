@@ -2,6 +2,11 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { fontSize } from "../../styles/typography";
 import { ReactComponent as IconEntree } from "../../assets/icon-entree.svg";
+import { ReactComponent as IconSides } from "../../assets/icon-sides.svg";
+import { ReactComponent as IconSnacks } from "../../assets/icon-snacks.svg";
+import { ReactComponent as IconUtensils } from "../../assets/icon-utensils.svg";
+import { ReactComponent as IconDrinks } from "../../assets/icon-drinks.svg";
+import { ReactComponent as IconDessert } from "../../assets/icon-dessert.svg";
 import { ReactComponent as IconUser } from "../../assets/icon-user.svg";
 
 const ItemMetaContainer = styled.div`
@@ -24,14 +29,40 @@ const ItemQty = styled.p`
   letter-spacing: 1px;
 `;
 
-const ItemMeta = props => {
-  return (
-    <ItemMetaContainer>
-      <IconEntree />
-      <IconUser />
-      <ItemQty>123</ItemQty>
-    </ItemMetaContainer>
-  );
-};
+class ItemMeta extends Component {
+  getTypeIcon(itemType) {
+    switch (itemType) {
+      case "sides":
+      case "side":
+        return <IconSides />;
+
+      case "snacks":
+      case "snack":
+        return <IconSnacks />;
+
+      case "utensils":
+        return <IconUtensils />;
+
+      case "drinks":
+        return <IconDrinks />;
+
+      case "dessert":
+        return <IconDessert />;
+
+      default:
+        return <IconEntree />;
+    }
+  }
+  render() {
+    const { type, qty } = this.props;
+    return (
+      <ItemMetaContainer>
+        {this.getTypeIcon(type)}
+        <IconUser />
+        <ItemQty>123</ItemQty>
+      </ItemMetaContainer>
+    );
+  }
+}
 
 export default ItemMeta;

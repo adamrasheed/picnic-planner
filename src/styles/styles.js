@@ -3,7 +3,7 @@ export const colors = {
   warning: `#FF644B`,
   text: {
     regular: "#222222",
-    light: ""
+    light: "#393939"
   }
 };
 

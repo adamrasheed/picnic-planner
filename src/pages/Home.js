@@ -1,10 +1,13 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Container from "../components/Global/Container";
 import { P, fontSize } from "../styles/typography";
-import { shadow, mediaSize } from "../styles/styles";
-
+import { shadow, mediaSize, container } from "../styles/styles";
 import Logo from "../assets/google-logo.svg";
+import Button from "../components/Global/Button";
+import firebase, { googleProvider } from "../authentication";
+import { GlobalContext } from "../Context";
 
 const HomeTitle = styled.h1`
   margin: 0;
@@ -40,9 +43,11 @@ const PageContainer = styled(Container)`
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
+  max-width: ${container.extraLarge};
+  margin: 0 auto;
 `;
 
-const SignInButton = styled.button`
+const SignInButton = styled(Button)`
   display: block;
   cursor: pointer;
   font-size: ${fontSize.body};
@@ -68,26 +73,51 @@ const SignInButton = styled.button`
 
 class Home extends Component {
   state = {};
+
+  handleAuth = () => {
+    firebase
+      .auth()
+      .signInWithPopup(googleProvider)
+      .then((result, error) => {
+        if (error) {
+          console.warn("unable to sign in with Google");
+          console.error(error);
+        } else {
+          this.setState({ redirect: true });
+          console.log(result);
+        }
+      });
+  };
+
   render() {
     console.log(this.props.match);
     return (
-      <>
-        <PageContainer>
-          <HomeTitle>Potluck Planner</HomeTitle>
-          <HomeDesc>
-            <P>Don’t want 20 people bringing potato salad?</P>
-            <P style={{ marginTop: `1rem` }}>Use this app.</P>
-          </HomeDesc>
-          <SignInButton>
-            <img
-              style={{ display: `block`, marginRight: `4px` }}
-              src={Logo}
-              alt=""
-            />
-            Sign in with Google
-          </SignInButton>
-        </PageContainer>
-      </>
+      <GlobalContext.Consumer>
+        {context => (
+          <PageContainer>
+            <HomeTitle>Potluck Planner</HomeTitle>
+            <HomeDesc>
+              <P>Don’t want 20 people bringing potato salad?</P>
+              <P style={{ marginTop: `1rem` }}>Use this app.</P>
+            </HomeDesc>
+            {context.state.user ? (
+              <>
+                <P>Hi, {context.state.user.displayName}!</P>
+                <Link to="/dashboard">Go to Dashboard</Link>
+              </>
+            ) : (
+              <SignInButton onClick={this.handleAuth}>
+                <img
+                  style={{ display: `block`, marginRight: `4px` }}
+                  src={Logo}
+                  alt=""
+                />
+                Sign in with Google
+              </SignInButton>
+            )}
+          </PageContainer>
+        )}
+      </GlobalContext.Consumer>
     );
   }
 }

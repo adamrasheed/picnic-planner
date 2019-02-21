@@ -54,12 +54,12 @@ class ItemMeta extends Component {
     }
   }
   render() {
-    const { type, qty } = this.props;
+    const { type, servings } = this.props;
     return (
       <ItemMetaContainer>
         {this.getTypeIcon(type)}
         <IconUser />
-        <ItemQty>123</ItemQty>
+        <ItemQty>{servings ? servings : `999`}</ItemQty>
       </ItemMetaContainer>
     );
   }

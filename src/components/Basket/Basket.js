@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import styled from "styled-components";
 import { container } from "../../styles/styles";
 import { fontSize, P } from "../../styles/typography";
 import BasketItem from "./BasketItem";
 import Button from "../Global/Button";
+import { GlobalContext } from "../../Context";
 
 const StyledBasket = styled.div`
   max-width: ${container.large};
@@ -23,17 +24,22 @@ const TotalFoodAmount = styled(P)`
 `;
 
 const Basket = props => {
+  const { basket } = props.state;
+  console.log("basket:");
+  console.log(Object.keys(basket).length);
   return (
-    <StyledBasket>
+    <StyledBasket items={props.state.basket.length}>
       <BasketLabel>What's in the Picnic Basket</BasketLabel>
-      <BasketItem item="Potato Salad" type="side" name="Brojamohan Mikowski" />
-      <BasketItem item="Cheese Board" type="snack" name="Slabromir Pelikan" />
-      <BasketItem
-        item="Walnut Cranberry Salad"
-        type="side"
-        name="Erika Matebro"
-      />
-      <TotalFoodAmount>There‘s enough food for {`999`} people</TotalFoodAmount>
+
+      {Object.keys(basket).length
+        ? Object.keys(basket).map(key => <p>{basket[key].name}</p>)
+        : `The basket is empty 😢`}
+
+      {Object.keys(props.state.basket).length ? (
+        <TotalFoodAmount>
+          There‘s enough food for {`999`} people
+        </TotalFoodAmount>
+      ) : null}
       <Button center rounded>
         Add to Basket
       </Button>
@@ -41,4 +47,8 @@ const Basket = props => {
   );
 };
 
-export default Basket;
+export default React.forwardRef((props, ref) => (
+  <GlobalContext.Consumer>
+    {context => <Basket {...props} ref={ref} state={context.state} />}
+  </GlobalContext.Consumer>
+));

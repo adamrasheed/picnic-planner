@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import MenuToggle from "./MenuToggle";
-import { Link } from "react-router-dom";
-import { colors } from "../../styles/styles";
-import { GlobalContext } from "../../Context";
+import { colors, container } from "../../styles/styles";
 import { A } from "../../styles/typography";
 
 const StyledHeader = styled.div`
@@ -12,6 +10,10 @@ const StyledHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: ${container.extraLarge};
+  margin: 0 auto;
+  flex: 0;
+  width: 100%;
 `;
 
 const HeaderTitle = styled.h1`

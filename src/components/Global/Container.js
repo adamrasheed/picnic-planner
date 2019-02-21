@@ -17,6 +17,7 @@ const Container = styled.div`
 
   @media screen and (min-width: ${mediaSize.medium}) {
     max-width: ${container.medium};
+    margin: 0 auto;
   }
   @media screen and (min-width: ${mediaSize.large}) {
     max-width: ${container.large};

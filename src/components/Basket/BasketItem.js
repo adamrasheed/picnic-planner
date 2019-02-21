@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { fontSize, P } from "../../styles/typography";
+import { P } from "../../styles/typography";
 import Person, { StyledPerson } from "../Global/Person";
 import ItemMeta from "./ItemMeta";
 
@@ -39,12 +39,18 @@ const ItemPerson = styled(Person)`
 class BasketItem extends Component {
   state = {};
   render() {
-    const { name, item, type } = this.props;
+    const {
+      item: { name, type, servings, user }
+    } = this.props;
     return (
       <ItemContainer>
-        <ItemTitle>{item}</ItemTitle>
-        <ItemMeta style={{ gridColumn: `2/3`, gridRow: `1/2` }} type={type} />
-        <ItemPerson small name={name} />
+        <ItemTitle>{name}</ItemTitle>
+        <ItemMeta
+          style={{ gridColumn: `2/3`, gridRow: `1/2` }}
+          type={type}
+          servings={servings}
+        />
+        <ItemPerson small name={user.displayName} image={user.photoUrl} />
       </ItemContainer>
     );
   }

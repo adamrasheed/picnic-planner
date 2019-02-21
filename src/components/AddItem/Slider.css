@@ -1,0 +1,27 @@
+.form-slider .rc-slider-step {
+  background: #222;
+  height: 2px;
+  transform: translateY(1px);
+  border: none;
+}
+
+.form-slider .rc-slider-rail {
+  background: none;
+}
+
+.form-slider .rc-slider-handle {
+  background: #222;
+  height: 20px;
+  width: 20px;
+  border: none;
+  transform: translateY(-2px);
+}
+
+.form-slider .rc-slider-handle:hover,
+.form-slider .rc-slider-handle:focus {
+  border: none;
+}
+
+.form-slider .rc-slider-track {
+  background: rgb(212, 184, 21);
+}

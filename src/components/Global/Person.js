@@ -36,7 +36,7 @@ const Person = ({ name, image, padding }, ...props) => {
         src={image ? image : `https://randomuser.me/api/portraits/men/31.jpg`}
         alt={name}
       />
-      <StyledPersonName>{name}</StyledPersonName>
+      <StyledPersonName>{name ? name : `placeholder`}</StyledPersonName>
     </StyledPerson>
   );
 };

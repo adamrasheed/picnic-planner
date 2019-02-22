@@ -2,12 +2,17 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { itemTypes } from "../../utils";
 import CategoryIcon from "./CategoryIcon";
+import { mediaSize } from "../../styles/styles";
 
 const CategorycounterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   flex-flow: row nowrap;
+
+  @media screen and (min-width: ${mediaSize.large}) {
+    justify-content: center;
+  }
 `;
 
 class CategoryCounter extends Component {

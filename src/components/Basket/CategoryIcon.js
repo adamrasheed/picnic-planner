@@ -7,6 +7,7 @@ import { ReactComponent as IconSnacks } from "../../assets/icon-snacks.svg";
 import { ReactComponent as IconUtensils } from "../../assets/icon-utensils.svg";
 import { ReactComponent as IconDrinks } from "../../assets/icon-drinks.svg";
 import { ReactComponent as IconDessert } from "../../assets/icon-dessert.svg";
+import { mediaSize } from "../../styles/styles";
 
 const StyledCategory = styled.div`
   font-size: 1rem;
@@ -23,6 +24,10 @@ const StyledCategory = styled.div`
     max-width: 1rem;
     max-height: 1rem;
     margin-bottom: 0.5rem;
+  }
+
+  @media screen and (min-width: ${mediaSize.large}) {
+    margin: 1rem;
   }
 `;
 

@@ -10,6 +10,20 @@ import { ReactComponent as IconDessert } from "../../assets/icon-dessert.svg";
 
 const StyledCategory = styled.div`
   font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 0.625rem;
+  line-height: 1;
+  margin: 0.75rem 0;
+  text-align: center;
+
+  svg {
+    max-width: 1rem;
+    max-height: 1rem;
+    margin-bottom: 0.5rem;
+  }
 `;
 
 const iconSelect = itemType => {
@@ -40,7 +54,8 @@ const iconSelect = itemType => {
 const CategoryIcon = ({ type, count }) => {
   return (
     <StyledCategory>
-      {iconSelect(type)}: {count ? count : `999`}
+      {iconSelect(type)}
+      {count ? count : `0`}
     </StyledCategory>
   );
 };

@@ -29,7 +29,7 @@ const TotalFoodAmount = styled(P)`
 
 class Basket extends React.Component {
   isUserSubmitted = (loggedInUserId, itemUserId) => {
-    return loggedInUserId == itemUserId;
+    return loggedInUserId === itemUserId;
   };
 
   render() {

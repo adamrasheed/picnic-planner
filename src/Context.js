@@ -1,6 +1,6 @@
 import React from "react";
 import { Component } from "react";
-import authentication, { googleProvider } from "./authentication";
+import fyreBase, { googleProvider, fyreBaseDatabase } from "./authentication";
 
 export const GlobalContext = React.createContext();
 
@@ -16,22 +16,28 @@ export class GlobalProvider extends Component {
   };
 
   authListener = () => {
-    authentication.auth().onAuthStateChanged(user => {
+    fyreBase.auth().onAuthStateChanged(user => {
       if (user) {
         console.log(user);
+        localStorage.setItem("user", user.uid);
         this.setState({ user });
       } else {
+        this.setState({ user: null });
       }
     });
   };
 
   login = () => {
-    authentication.signInWithPopup(googleProvider).then(result => {
+    fyreBase.signInWithPopup(googleProvider).then(result => {
       const user = result.user;
       this.setState({
         user
       });
     });
+  };
+
+  resetSubmit = ref => {
+    console.log("resetting submit");
   };
 
   handleSubmit = item => {
@@ -42,14 +48,21 @@ export class GlobalProvider extends Component {
       photoURL: this.state.user.photoURL
     };
     item.user = user;
-    const basketItems = this.state.basket;
-    basketItems[`item${Date.now()}`] = item;
-    console.log(this.state);
-    console.log(Object.keys(this.state.basket).length);
+    const basket = this.state.basket;
+    basket[`item${Date.now()}`] = item;
+    this.setState({ basket });
   };
 
   componentWillMount() {
     this.authListener();
+    this.ref = fyreBaseDatabase.syncState(`potluck`, {
+      context: this,
+      state: `basket`
+    });
+  }
+
+  componentWillUnmount() {
+    fyreBase.removeBinding(this.ref);
   }
 
   render() {
@@ -61,14 +74,15 @@ export class GlobalProvider extends Component {
           toggleMenu: () => this.setState({ menuOpen: !this.state.menuOpen }),
           login: this.login,
           logout: () => {
-            authentication.signOut().then(() => {
+            fyreBase.signOut().then(() => {
               this.setState({ user: null });
               localStorage.removeItem("user");
             });
           },
           handleSubmit: item => {
             this.handleSubmit(item);
-          }
+          },
+          resetSubmit: this.resetSubmit
         }}
       >
         {this.props.children}

@@ -6,7 +6,7 @@ import { P, fontSize } from "../styles/typography";
 import { shadow, mediaSize, container } from "../styles/styles";
 import Logo from "../assets/google-logo.svg";
 import Button from "../components/Global/Button";
-import firebase, { googleProvider } from "../authentication";
+import fyreBase, { googleProvider } from "../authentication";
 import { GlobalContext } from "../Context";
 
 const HomeTitle = styled.h1`
@@ -75,7 +75,7 @@ class Home extends Component {
   state = {};
 
   handleAuth = () => {
-    firebase
+    fyreBase
       .auth()
       .signInWithPopup(googleProvider)
       .then((result, error) => {

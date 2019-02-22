@@ -5,6 +5,7 @@
   "dependencies": {
     "firebase": "^5.8.2",
     "rc-slider": "^8.6.5",
+    "re-base": "^4.0.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-router-dom": "^4.3.1",

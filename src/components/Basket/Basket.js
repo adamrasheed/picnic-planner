@@ -5,6 +5,8 @@ import { fontSize, P } from "../../styles/typography";
 import BasketItem from "./BasketItem";
 import Button from "../Global/Button";
 import { GlobalContext } from "../../Context";
+import EmptyBasket from "./EmptyBasket";
+import CategoryCounter from "./CategoryCounter";
 
 const StyledBasket = styled.div`
   max-width: ${container.large};
@@ -20,35 +22,65 @@ const BasketLabel = styled(P)`
 
 const TotalFoodAmount = styled(P)`
   text-align: center;
+  font-size: ${fontSize.small};
+  line-height: 1;
   margin: 1rem 0 2rem;
 `;
 
-const Basket = props => {
-  const { basket } = props.state;
-  console.log("basket:");
-  console.log(Object.keys(basket).length);
+class Basket extends React.Component {
+  isUserSubmitted = (loggedInUserId, itemUserId) => {
+    return loggedInUserId == itemUserId;
+  };
+
+  render() {
+    const { state } = this.props.context;
+    const basketItems = Object.keys(state.basket).length;
+    console.log(state.user && state.user.uid);
+    return (
+      <StyledBasket>
+        <BasketLabel>
+          What's in the Picnic Basket{basketItems > 0 && ` (${basketItems})`}
+        </BasketLabel>
+
+        {/* For User Submitted items */}
+        {basketItems &&
+          Object.keys(state.basket)
+            .map(key => (
+              <BasketItem
+                userSubmitted={true}
+                key={key}
+                details={state.basket[key]}
+              />
+            ))
+            .filter(item => {
+              const itemUserId = item.props.details.user.uid;
+              const loggedinUserId = state.user.uid;
+              return itemUserId === loggedinUserId;
+            })}
+
+        {basketItems ? (
+          Object.keys(state.basket)
+            .map(key => <BasketItem key={key} details={state.basket[key]} />)
+            .filter(item => {
+              const itemUserId = item.props.details.user.uid;
+              const loggedinUserId = state.user.uid;
+              return itemUserId !== loggedinUserId;
+            })
+        ) : (
+          <EmptyBasket />
+        )}
+        <CategoryCounter basket={state.basket} />
+      </StyledBasket>
+    );
+  }
+}
+
+const BasketWrapper = () => {
   return (
-    <StyledBasket items={props.state.basket.length}>
-      <BasketLabel>What's in the Picnic Basket</BasketLabel>
-
-      {Object.keys(basket).length
-        ? Object.keys(basket).map(key => <p>{basket[key].name}</p>)
-        : `The basket is empty 😢`}
-
-      {Object.keys(props.state.basket).length ? (
-        <TotalFoodAmount>
-          There‘s enough food for {`999`} people
-        </TotalFoodAmount>
-      ) : null}
-      <Button center rounded>
-        Add to Basket
-      </Button>
-    </StyledBasket>
+    <GlobalContext.Consumer>
+      {context => <Basket context={context} />}
+    </GlobalContext.Consumer>
   );
 };
 
-export default React.forwardRef((props, ref) => (
-  <GlobalContext.Consumer>
-    {context => <Basket {...props} ref={ref} state={context.state} />}
-  </GlobalContext.Consumer>
-));
+export default BasketWrapper;

@@ -9,7 +9,7 @@ import { ReactComponent as IconUtensils } from "../../assets/icon-utensils.svg";
 import { ReactComponent as IconDrinks } from "../../assets/icon-drinks.svg";
 import { ReactComponent as IconDessert } from "../../assets/icon-dessert.svg";
 import { fontSize } from "../../styles/typography";
-import { colors } from "../../styles/styles";
+import { colors, mediaSize } from "../../styles/styles";
 
 const StyledItemType = styled.label`
   font-size: ${fontSize.extraSmall};
@@ -50,7 +50,14 @@ const Icon = styled.div`
     background: #FACA39;
   `}
 
-  svg {
+@media screen and (min-width: ${mediaSize.medium}) {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  @media screen and (min-width: ${mediaSize.large}) {
+    width: 5rem;
+    height: 5rem;
   }
 `;
 

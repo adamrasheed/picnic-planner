@@ -18,6 +18,11 @@ const Button = styled.button`
   width: ${props => (props.full ? `100%` : `auto`)};
   border-radius: ${props => (props.rounded ? `4px` : `unset`)};
   ${props => (props.center ? `margin-right: auto; margin-left: auto;` : null)}
+
+  &:focus {
+    outline: 0;
+    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.16), 0 4px 6px 0 rgba(0, 0, 0, 0.08);
+  }
 `;
 
 export default Button;

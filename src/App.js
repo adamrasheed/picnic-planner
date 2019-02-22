@@ -5,29 +5,10 @@ import NoMatch from "./pages/NoMatch";
 import { colors } from "./styles/styles";
 import Header from "./components/Header/Header";
 import { GlobalProvider, GlobalContext } from "./Context";
-import authentication from "./authentication";
 import Nav from "./components/Global/Nav";
 import Dashboard from "./pages/Dashboard";
 
 class App extends Component {
-  authListener = () => {
-    authentication.auth().onAuthStateChanged(user => {
-      console.log(user.displayName);
-      if (user) {
-        this.setState({ user });
-        localStorage.setItem("user", user.uid);
-      } else {
-        this.setState({ user: null });
-        localStorage.removeItem("user");
-      }
-    });
-  };
-
-  componentWillMount() {
-    // this.authListener();
-    console.log(this.props);
-  }
-
   render() {
     const isHome = window.location.pathname === `/`;
 

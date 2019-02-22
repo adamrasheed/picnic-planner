@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import { P } from "../../styles/typography";
 
 export const StyledPerson = styled.div`
@@ -20,8 +21,8 @@ export const StyledPerson = styled.div`
 const StyledPersonImg = styled.img`
   display: block;
   border-radius: 50%;
-  width: 2rem;
-  margin-right: 0.75rem;
+  width: ${props => (props.userSubmitted ? `1rem` : `1.5rem`)};
+  margin-right: 0.375rem;
 `;
 
 const StyledPersonName = styled(P)`
@@ -29,16 +30,25 @@ const StyledPersonName = styled(P)`
   line-height: 1;
 `;
 
-const Person = ({ name, image, padding }, ...props) => {
+const Person = ({ name, image, id, padding, userSubmitted }, ...props) => {
   return (
-    <StyledPerson padding={padding} {...props}>
+    <StyledPerson id={id} padding={padding} {...props}>
       <StyledPersonImg
+        userSubmitted={userSubmitted}
         src={image ? image : `https://randomuser.me/api/portraits/men/31.jpg`}
         alt={name}
       />
-      <StyledPersonName>{name ? name : `placeholder`}</StyledPersonName>
+      <StyledPersonName>
+        {name ? (userSubmitted ? `you` : name) : `placeholder`}
+      </StyledPersonName>
     </StyledPerson>
   );
+};
+
+Person.propTypes = {
+  name: PropTypes.string,
+  id: PropTypes.string,
+  image: PropTypes.string
 };
 
 export default Person;

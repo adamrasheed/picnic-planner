@@ -6,21 +6,17 @@ import { GlobalContext } from "../../Context";
 
 import "rc-slider/assets/index.css";
 import Button from "../Global/Button";
-import { colors } from "../../styles/styles";
+import { colors, mediaSize } from "../../styles/styles";
 import "./Slider.css";
 import AddItemType from "./AddItemType";
-
-const itemTypes = [
-  "entree",
-  "sides",
-  "snacks",
-  "drinks",
-  "dessert",
-  "utensils"
-];
+import { itemTypes } from "../../utils";
 
 const FormContainer = styled.div`
   max-width: 20rem;
+  margin: 0 auto;
+  @media screen and (min-width: ${mediaSize.medium}) {
+    margin: 0;
+  }
 `;
 
 const FormLabel = styled(P)`
@@ -80,12 +76,16 @@ const Message = styled.p`
 `;
 
 class AddItemForm extends React.Component {
-  state = {
-    formStatus: null,
-    itemName: ``,
-    itemServings: 0,
-    itemType: null
-  };
+  constructor() {
+    super();
+    this.formRef = React.createRef();
+    this.state = {
+      formStatus: null,
+      itemName: ``,
+      itemServings: 0,
+      itemType: null
+    };
+  }
 
   handleChange = event => {
     const target = event.target;
@@ -115,7 +115,11 @@ class AddItemForm extends React.Component {
     item.servings = this.state.itemServings;
 
     if (isValid) {
+      // Send up to context
       this.props.context.handleSubmit(item);
+      // Clear theform
+      event.currentTarget.reset();
+      this.formRef.current.reset();
     } else {
       console.warn("something screwed up, bronamath.");
     }
@@ -139,10 +143,11 @@ class AddItemForm extends React.Component {
   };
 
   render() {
+    console.log();
     return (
       <FormContainer>
         <FormLabel>Pick an Item Below</FormLabel>
-        <Form onSubmit={this.addItem}>
+        <Form ref={this.formRef} onSubmit={this.addItem}>
           <ItemTypesContainer>
             {itemTypes.map((type, i) => (
               <AddItemType

@@ -24,7 +24,7 @@ const ItemMetaContainer = styled.div`
 
 const ItemQty = styled.p`
   margin: 0 0 0 0.5rem;
-  font-size: ${fontSize.small};
+  font-size: ${fontSize.extraSmall};
   line-height: 1;
   letter-spacing: 1px;
 `;

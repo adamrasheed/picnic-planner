@@ -28,6 +28,13 @@ const StyledCategory = styled.div`
 
   @media screen and (min-width: ${mediaSize.large}) {
     margin: 1rem;
+    font-size: 0.75rem;
+
+    svg {
+      max-width: 1.25rem;
+      max-height: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
   }
 `;
 

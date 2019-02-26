@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { P } from "../../styles/typography";
 
 export const StyledPerson = styled.div`
@@ -30,16 +31,23 @@ const StyledPersonName = styled(P)`
   line-height: 1;
 `;
 
+const UserAvatar = styled(FontAwesomeIcon)`
+  font-size: 1rem;
+  opacity: 0.75;
+  margin-right: 0.25rem;
+`;
+
 const Person = ({ name, image, id, padding, userSubmitted }, ...props) => {
   return (
     <StyledPerson id={id} padding={padding} {...props}>
-      <StyledPersonImg
-        userSubmitted={userSubmitted}
-        src={image ? image : `https://randomuser.me/api/portraits/men/31.jpg`}
-        alt={name}
-      />
+      {image ? (
+        <StyledPersonImg userSubmitted={userSubmitted} src={image} alt={name} />
+      ) : (
+        <UserAvatar icon="user-circle" />
+      )}
+
       <StyledPersonName>
-        {name ? (userSubmitted ? `you` : name) : `placeholder`}
+        {name ? (userSubmitted ? `you` : name) : `Joe Schmoe`}
       </StyledPersonName>
     </StyledPerson>
   );

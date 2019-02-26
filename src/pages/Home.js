@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Container from "../components/Global/Container";
 import { P, fontSize } from "../styles/typography";
-import { shadow, mediaSize, container } from "../styles/styles";
+import { shadow, mediaSize, container, colors } from "../styles/styles";
 import Logo from "../assets/google-logo.svg";
 import Button from "../components/Global/Button";
 import fyreBase, { googleProvider } from "../authentication";
@@ -71,26 +71,34 @@ const SignInButton = styled(Button)`
   }
 `;
 
+const DashboardLink = styled(Link)`
+  display: block;
+  cursor: pointer;
+  font-size: ${fontSize.body};
+  line-height: 1;
+  box-shadow: ${shadow.small};
+  padding: 2px 1.125rem 2px 2px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  margin: auto auto 1rem;
+  color: ${colors.text.regular};
+  text-decoration: none;
+  text-align: center;
+  padding: 12px 24px;
+  @media screen and (min-width: ${mediaSize.medium}) {
+    margin: 1rem 0;
+  }
+`;
+
 class Home extends Component {
-  state = {};
-
-  handleAuth = () => {
-    fyreBase
-      .auth()
-      .signInWithPopup(googleProvider)
-      .then((result, error) => {
-        if (error) {
-          console.warn("unable to sign in with Google");
-          console.error(error);
-        } else {
-          this.setState({ redirect: true });
-          console.log(result);
-        }
-      });
-  };
-
   render() {
-    console.log(this.props.match);
     return (
       <GlobalContext.Consumer>
         {context => (
@@ -103,10 +111,10 @@ class Home extends Component {
             {context.state.user ? (
               <>
                 <P>Hi, {context.state.user.displayName}!</P>
-                <Link to="/dashboard">Go to Dashboard</Link>
+                <DashboardLink to="/dashboard">Go to Dashboard ></DashboardLink>
               </>
             ) : (
-              <SignInButton onClick={this.handleAuth}>
+              <SignInButton onClick={context.login}>
                 <img
                   style={{ display: `block`, marginRight: `4px` }}
                   src={Logo}

@@ -3,7 +3,8 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect
+  Redirect,
+  withRouter
 } from "react-router-dom";
 import Home from "./pages/Home";
 import NoMatch from "./pages/NoMatch";
@@ -13,12 +14,16 @@ import { GlobalProvider, GlobalContext } from "./Context";
 import Nav from "./components/Global/Nav";
 import Dashboard from "./pages/Dashboard";
 
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+
 const PrivateRoute = ({ component: Component, state, ...rest }) => {
+  const loggedIn = localStorage.getItem("user");
   return (
     <Route
       {...rest}
       render={props =>
-        state.user ? (
+        loggedIn ? (
           <Component {...props} />
         ) : (
           <Redirect
@@ -33,39 +38,37 @@ const PrivateRoute = ({ component: Component, state, ...rest }) => {
   );
 };
 
+library.add(faUserCircle);
+
 class App extends Component {
   render() {
-    const isHome = window.location.pathname === `/`;
-
     return (
       <GlobalProvider>
         <GlobalContext.Consumer>
-          {context => (
-            <div
-              className="App"
-              style={{ background: colors.background }}
-              context={context}
-            >
-              {!isHome && <Header />}
-              <Nav open={context.state.menuOpen} />
-              <Router>
-                <Switch>
-                  <Route
-                    exact
-                    path="/"
-                    authListener={this.authListener}
-                    component={Home}
-                  />
-                  <PrivateRoute
-                    state={context.state}
-                    path="/dashboard"
-                    component={Dashboard}
-                  />
-                  <Route component={NoMatch} />
-                </Switch>
-              </Router>
-            </div>
-          )}
+          {context => {
+            const { menuOpen } = context.state;
+            return (
+              <div
+                className={`App${menuOpen ? ` menu-open` : ``}`}
+                style={{ background: colors.background }}
+                context={context}
+              >
+                <Header />
+                <Nav open={context.state.menuOpen} />
+                <Router>
+                  <Switch>
+                    <Route exact path="/" component={Home} />
+                    <PrivateRoute
+                      state={context.state}
+                      path="/dashboard"
+                      component={Dashboard}
+                    />
+                    <Route component={NoMatch} />
+                  </Switch>
+                </Router>
+              </div>
+            );
+          }}
         </GlobalContext.Consumer>
       </GlobalProvider>
     );

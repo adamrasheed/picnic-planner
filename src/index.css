@@ -29,6 +29,11 @@ body {
   color: #222;
 }
 
+body.scroll-lock {
+  overflow: hidden;
+  height: 100vh;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -39,6 +44,6 @@ code {
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
-  height: -webkit-fill-available;
+  /* height: -webkit-fill-available; */
   position: relative;
 }

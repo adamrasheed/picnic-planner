@@ -16,6 +16,8 @@ const FormContainer = styled.div`
   margin: 0 auto;
   @media screen and (min-width: ${mediaSize.medium}) {
     margin: 0;
+    position: sticky;
+    top: 1rem;
   }
 `;
 
@@ -120,6 +122,12 @@ class AddItemForm extends React.Component {
       // Clear theform
       event.currentTarget.reset();
       this.formRef.current.reset();
+      this.setState({
+        itemName: ``,
+        itemServings: 0,
+        itemType: null,
+        formStatus: null
+      });
     } else {
       console.warn("something screwed up, bronamath.");
     }
@@ -188,6 +196,7 @@ class AddItemForm extends React.Component {
             className="form-slider"
             min={0}
             max={20}
+            value={this.state.itemServings}
             onChange={this.handleSlider}
           />
 

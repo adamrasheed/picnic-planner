@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+
 import { shadow, transition } from "../../styles/styles";
 import Person from "./Person";
 import Button from "./Button";
@@ -11,10 +12,11 @@ const NavContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
+  height: 100vh;
   width: 16rem;
   padding: 2rem;
   display: flex;
+  z-index: 10;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;

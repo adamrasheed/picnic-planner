@@ -1,5 +1,5 @@
-import React from "react";
-import { Component } from "react";
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import fyreBase, { googleProvider, fyreBaseDatabase } from "./authentication";
 
 export const GlobalContext = React.createContext();
@@ -18,22 +18,47 @@ export class GlobalProvider extends Component {
   authListener = () => {
     fyreBase.auth().onAuthStateChanged(user => {
       if (user) {
-        console.log(user);
         localStorage.setItem("user", user.uid);
         this.setState({ user });
       } else {
         this.setState({ user: null });
+        localStorage.removeItem("user");
       }
     });
   };
 
+  toggleMenu = () => {
+    this.setState({ menuOpen: !this.state.menuOpen });
+    const scrollLock = document.body.classList.contains('scroll-lock');
+    document.body.classList.toggle('scroll-lock');
+  };
+
   login = () => {
-    fyreBase.signInWithPopup(googleProvider).then(result => {
-      const user = result.user;
-      this.setState({
-        user
+    fyreBase
+      .auth()
+      .signInWithPopup(googleProvider)
+      .then(result => {
+        const user = result.user;
+        this.setState({
+          menuOpen: false,
+          user
+        });
+        console.log(this);
       });
-    });
+  };
+
+  logout = () => {
+    fyreBase
+      .auth()
+      .signOut()
+      .then(result => {
+        this.setState({ menuOpen: !this.state.menuOpen });
+        localStorage.removeItem("user");
+      })
+      .then(() => {
+        this.setState({ user: null });
+        this.history.push("/dashboard");
+      });
   };
 
   resetSubmit = ref => {
@@ -41,7 +66,6 @@ export class GlobalProvider extends Component {
   };
 
   handleSubmit = item => {
-    console.log("submitedd through context");
     const user = {
       displayName: this.state.user.displayName,
       uid: this.state.user.uid,
@@ -50,6 +74,12 @@ export class GlobalProvider extends Component {
     item.user = user;
     const basket = this.state.basket;
     basket[`item${Date.now()}`] = item;
+    this.setState({ basket });
+  };
+
+  deleteItem = itemKey => {
+    const basket = { ...this.state.basket };
+    basket[itemKey] = null;
     this.setState({ basket });
   };
 
@@ -62,27 +92,24 @@ export class GlobalProvider extends Component {
   }
 
   componentWillUnmount() {
-    fyreBase.removeBinding(this.ref);
+    fyreBaseDatabase.removeBinding(this.ref);
   }
 
   render() {
-    console.log(this.state);
     return (
       <GlobalContext.Provider
         value={{
           state: this.state,
-          toggleMenu: () => this.setState({ menuOpen: !this.state.menuOpen }),
+          toggleMenu: this.toggleMenu,
           login: this.login,
-          logout: () => {
-            fyreBase.signOut().then(() => {
-              this.setState({ user: null });
-              localStorage.removeItem("user");
-            });
-          },
+          logout: this.logout,
           handleSubmit: item => {
             this.handleSubmit(item);
           },
-          resetSubmit: this.resetSubmit
+          resetSubmit: this.resetSubmit,
+          deleteItem: itemKey => {
+            this.deleteItem(itemKey);
+          }
         }}
       >
         {this.props.children}
@@ -90,3 +117,5 @@ export class GlobalProvider extends Component {
     );
   }
 }
+
+export default GlobalProvider;

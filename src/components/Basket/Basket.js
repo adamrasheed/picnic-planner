@@ -33,9 +33,9 @@ class Basket extends React.Component {
   };
 
   render() {
-    const { state } = this.props.context;
+    const { state, deleteItem } = this.props.context;
     const basketItems = Object.keys(state.basket).length;
-    console.log(state.user && state.user.uid);
+    const uid = state.user && state.user.uid;
     return (
       <StyledBasket>
         <BasketLabel>
@@ -48,8 +48,10 @@ class Basket extends React.Component {
             .map(key => (
               <BasketItem
                 userSubmitted={true}
+                id={key}
                 key={key}
                 details={state.basket[key]}
+                deleteItem={deleteItem}
               />
             ))
             .filter(item => {

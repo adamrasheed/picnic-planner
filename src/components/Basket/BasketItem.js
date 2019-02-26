@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { P } from "../../styles/typography";
+import { P, fontSize } from "../../styles/typography";
 import Person, { StyledPerson } from "../Global/Person";
 import ItemMeta from "./ItemMeta";
 
@@ -38,12 +38,39 @@ const ItemTitle = styled(P)`
   grid-row: 1/2;
 `;
 
+const EditItem = styled.div`
+  grid-column: 2/3;
+  grid-row: 2/3;
+  justify-self: end;
+  align-self: end;
+`;
+
+const DeleteButton = styled.button`
+  padding: 0.25rem 0.5rem;
+  text-transform: uppercase;
+  font-size: 8px;
+  line-height: 1;
+  cursor: pointer;
+  text-align: center;
+  display: block;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+
+  &:hover,
+  &:focus {
+    outline: 0;
+    background: rgba(0, 0, 0, 0.06);
+  }
+`;
+
 class BasketItem extends Component {
   state = {};
   render() {
     const {
       details: { name, type, servings, user },
-      userSubmitted
+      id,
+      userSubmitted,
+      deleteItem
     } = this.props;
     return (
       <ItemContainer userSubmitted={userSubmitted}>
@@ -60,6 +87,13 @@ class BasketItem extends Component {
           image={user.photoURL}
           userSubmitted={userSubmitted}
         />
+        {userSubmitted && (
+          <EditItem>
+            <DeleteButton onClick={deleteItem.bind(this, id)}>
+              Delete
+            </DeleteButton>
+          </EditItem>
+        )}
       </ItemContainer>
     );
   }

@@ -2,12 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import Container from "../components/Global/Container";
 import Greeting from "../components/Dashboard/Greeting";
-import Basket from "../components/Basket/Basket";
+import BasketWrapper from "../components/Basket/Basket";
 import { mediaSize } from "../styles/styles";
 import AddItemForm from "../components/AddItem/AddItemForm";
 
 const DashboardContainer = styled(Container)`
   max-width: unset;
+
   @media screen and (min-width: ${mediaSize.medium}) {
     margin-top: 4rem;
     margin-bottom: 4rem;
@@ -43,13 +44,7 @@ class Dashboard extends React.Component {
       <DashboardContainer padding>
         <FirstColumn>
           <Greeting name="Adam" />
-
-          {/*
-				TODO
-				- Add Picnic Item View
-        */}
-
-          <Basket />
+          <BasketWrapper />
         </FirstColumn>
         <AddItemForm />
       </DashboardContainer>
